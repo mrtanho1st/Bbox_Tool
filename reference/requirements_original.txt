@@ -1,0 +1,745 @@
+# MASTER PROMPT — TOOLS BY HKHANG17PLS
+
+## 1. Vai trò và nhiệm vụ
+
+Bạn là một Senior Python Engineer, Computer Vision Engineer, Desktop Software Architect, UI/UX Designer và Software QA Engineer.
+
+Nhiệm vụ của bạn là nâng cấp công cụ gán nhãn Bounding Box hiện có trong workspace thành một ứng dụng desktop đa năng mang tên:
+
+**Tools by hkhang17pls**
+
+Tên ứng dụng phải được hiển thị nhất quán trên:
+- Tiêu đề cửa sổ.
+- Màn hình khởi động.
+- Trang About.
+- Tài liệu hướng dẫn.
+- Cấu hình đóng gói phần mềm.
+
+Đây không còn là công cụ chỉ dành riêng cho tiền Việt Nam mà là một **Generic Computer Vision Dataset Annotation Tool**, có thể sử dụng cho nhiều đề tài nghiên cứu Machine Learning và Deep Learning.
+
+Ví dụ:
+- Phát hiện và phân loại tiền Việt Nam.
+- Nhận diện phương tiện giao thông.
+- Nhận diện người, động vật, đồ vật.
+- Phát hiện lỗi sản phẩm.
+- Nhận diện các khu vực trong tài liệu.
+- Phát hiện đối tượng trong ảnh y tế hoặc công nghiệp.
+- Các dataset Object Detection tùy chỉnh khác.
+
+**Yêu cầu quan trọng:** Phải trực tiếp lập trình trên workspace hiện tại, không chỉ đưa ra ví dụ code hoặc hướng dẫn lý thuyết.
+
+Không tự ý xóa hoặc ghi đè dữ liệu người dùng.
+
+---
+
+## 2. Phân tích công cụ hiện tại
+
+Workspace mặc định:
+
+`D:\Project\Tools`
+
+Trong workspace có thể tồn tại:
+- File Python chứa class `LabelTool`.
+- File `label_tool_vnd.py`.
+- Các file notebook `.ipynb`.
+- Thư mục `Datasets`.
+- Các dataset đã được gán nhãn YOLO.
+
+Trước tiên phải:
+
+1. Quét cấu trúc workspace.
+2. Đọc và hiểu source code gán nhãn hiện tại.
+3. Phân tích các hàm quản lý ảnh, Bounding Box, lưu nhãn, điều hướng.
+4. Xác định những phần có thể tái sử dụng.
+5. Xác định những phần phải tái cấu trúc.
+6. Sao lưu source code trước khi sửa.
+7. Giữ nguyên dữ liệu đã gán nhãn.
+
+Không được tự động coi dataset tiền Việt Nam là cấu hình mặc định bắt buộc của mọi project.
+
+---
+
+## 3. Công nghệ sử dụng
+
+Tech stack:
+
+- Python 3.13.
+- PySide6 để xây dựng GUI.
+- OpenCV và Pillow để xử lý ảnh.
+- pathlib để quản lý đường dẫn.
+- JSON hoặc YAML để lưu cấu hình.
+- pytest để kiểm thử.
+- PyInstaller để đóng gói EXE khi ứng dụng đã ổn định.
+
+Ưu tiên kiến trúc MVC/MVVM hoặc một kiến trúc phân lớp tương đương.
+
+Tách riêng:
+- User Interface.
+- Annotation Engine.
+- Dataset Management.
+- File Import/Export.
+- Project Configuration.
+- Data Validation.
+- Application Settings.
+
+Ứng dụng phải hoạt động offline trên Windows 10/11.
+
+Không phụ thuộc vào Google Colab hoặc Google Drive.
+
+---
+
+# 4. PROJECT MANAGEMENT — Quản lý nhiều dự án
+
+Đây là một trong những chức năng quan trọng nhất.
+
+Ứng dụng phải hỗ trợ tạo và quản lý nhiều project độc lập.
+
+Ví dụ:
+
+**Project A: Vietnamese Banknotes**
+- 9 classes.
+- Dataset tiền Việt Nam.
+- YOLO Object Detection.
+
+**Project B: Vehicle Detection**
+- Car.
+- Motorcycle.
+- Bus.
+- Truck.
+- Bicycle.
+
+**Project C: Document Detection**
+- Date Area.
+- Cash Table.
+- Total Amount.
+- Signature.
+
+Mỗi project có:
+- Tên project.
+- Mô tả.
+- Đường dẫn dataset.
+- Danh sách class.
+- Định dạng annotation.
+- Ngày tạo.
+- Ngày cập nhật.
+- Trạng thái công việc.
+- Các thiết lập riêng.
+
+Chức năng bắt buộc:
+- Create Project.
+- Open Project.
+- Recent Projects.
+- Edit Project.
+- Duplicate Project.
+- Import Existing Dataset.
+- Close Project.
+- Project Settings.
+
+Không tự động xóa dataset khi xóa project khỏi danh sách quản lý. Muốn xóa dữ liệu vật lý phải có thao tác riêng và xác nhận rõ ràng.
+
+Có màn hình Home Dashboard hiển thị các dự án gần đây.
+
+---
+
+# 5. CLASS MANAGEMENT — Quản lý nhãn động
+
+**TUYỆT ĐỐI KHÔNG HARDCODE DANH SÁCH CLASS TRONG SOURCE CODE.**
+
+Mỗi project được tự định nghĩa danh sách class.
+
+Ví dụ project tiền Việt Nam:
+
+| Class ID | Class Name |
+|---|---|
+| 0 | 1000 |
+| 1 | 2000 |
+| 2 | 5000 |
+| 3 | 10000 |
+| 4 | 20000 |
+| 5 | 50000 |
+| 6 | 100000 |
+| 7 | 200000 |
+| 8 | 500000 |
+
+Project khác có thể có 2, 5, 15, 30 hoặc nhiều class hơn.
+
+Chức năng Class Manager:
+- Add Class.
+- Rename Class.
+- Edit Class Color.
+- Search Class.
+- Reorder Classes.
+- Delete Class.
+- Import Class List.
+- Export Class List.
+
+Class ID dùng cho YOLO phải là số nguyên không âm, liên tục từ 0 đến N-1.
+
+Phải đảm bảo:
+- Không tạo Class ID trùng.
+- Không tự động đổi ID khi không cần thiết.
+- Không âm thầm làm thay đổi ý nghĩa nhãn cũ.
+- Khi sắp xếp lại hoặc xóa class có ảnh hưởng tới ID, phải hiển thị bảng ánh xạ trước/sau và yêu cầu xác nhận.
+- Thực hiện chuyển đổi ID trên bản sao hoặc bản sao lưu có khả năng phục hồi.
+- Không cho xóa class đang được sử dụng mà không xử lý các annotation liên quan.
+
+Phím 1–9 dùng để chọn nhanh 9 class đầu tiên. Với project nhiều hơn 9 class, người dùng có thể chọn thông qua Class Panel, tìm kiếm hoặc phím tắt tùy chỉnh.
+
+Lưu cấu hình class riêng theo từng project.
+
+---
+
+# 6. ANNOTATION ENGINE
+
+Giai đoạn đầu tập trung hoàn thiện **Object Detection — Bounding Box**.
+
+Chức năng:
+- Draw Bounding Box.
+- Select Bounding Box.
+- Move Bounding Box.
+- Resize Bounding Box.
+- Change Class.
+- Delete Bounding Box.
+- Duplicate Bounding Box.
+- Undo / Redo.
+- Zoom In / Zoom Out.
+- Pan Image.
+- Fit to Window.
+- Hide / Show Annotations.
+
+Yêu cầu:
+- Một ảnh có nhiều đối tượng.
+- Một ảnh có nhiều class.
+- Các Bounding Box được phép chồng lên nhau.
+- Có thể chọn box nằm bên dưới box khác.
+- Không giới hạn số lượng box theo class.
+- Không tạo Bounding Box có diện tích bằng 0.
+- Không cho box nằm ngoài giới hạn ảnh.
+- Không thay đổi ảnh gốc khi gán nhãn.
+
+Phải tách chế độ thao tác rõ ràng:
+
+**Draw Mode:** Vẽ Bounding Box mới.
+
+**Select Mode:** Chọn đối tượng.
+
+**Edit Mode:** Di chuyển, thay đổi kích thước Bounding Box.
+
+**Pan Mode:** Di chuyển góc nhìn ảnh.
+
+Sử dụng hệ tọa độ ảnh gốc làm nguồn dữ liệu chính, không dùng tọa độ cửa sổ làm dữ liệu annotation.
+
+Các chức năng segmentation, polygon, keypoints hoặc oriented bounding box có thể bổ sung sau dưới dạng module độc lập. Không được hiển thị là đã hỗ trợ nếu chưa triển khai đầy đủ.
+
+---
+
+# 7. THIẾT KẾ GIAO DIỆN
+
+Thiết kế giao diện hiện đại, chuyên nghiệp, ưu tiên Dark Mode.
+
+Bố cục:
+
+## A. Header
+
+Hiển thị:
+
+**Tools by hkhang17pls**
+
+Tên project đang mở và trạng thái lưu dữ liệu.
+
+## B. Menu Bar
+
+**File**
+- New Project.
+- Open Project.
+- Import Dataset.
+- Save.
+- Save All.
+- Settings.
+- Exit.
+
+**Project**
+- Project Settings.
+- Manage Classes.
+- Recent Projects.
+- Dataset Information.
+
+**Annotation**
+- Draw.
+- Select.
+- Edit.
+- Delete.
+- Undo.
+- Redo.
+
+**Dataset**
+- Image Browser.
+- Train / Validation / Test.
+- Dataset Statistics.
+- Validate Annotations.
+- Export Dataset.
+
+**View**
+- Zoom In.
+- Zoom Out.
+- Fit Image.
+- Show Grid.
+- Show Labels.
+- Dark / Light Theme.
+
+**Help**
+- User Guide.
+- Keyboard Shortcuts.
+- About Tools by hkhang17pls.
+
+## C. Left Sidebar
+
+Image Browser:
+- Danh sách ảnh.
+- Thumbnail ảnh.
+- Tìm kiếm ảnh.
+- Lọc theo trạng thái.
+- Số lượng Bounding Box.
+- Trạng thái hoàn thành.
+- Chuyển nhanh giữa các ảnh.
+
+## D. Center Workspace
+
+Annotation Canvas:
+- Hiển thị ảnh.
+- Vẽ Bounding Box.
+- Zoom / Pan.
+- Chỉnh sửa box.
+- Hiển thị nhãn.
+- Hiển thị box đang chọn.
+
+## E. Right Sidebar
+
+Class & Annotation Panel:
+- Danh sách class.
+- Màu đại diện.
+- Class ID.
+- Số lượng box của từng class.
+- Danh sách Bounding Box trong ảnh.
+- Thuộc tính box đang chọn.
+
+## F. Bottom Status Bar
+
+Hiển thị:
+- Tên ảnh.
+- Độ phân giải.
+- Ảnh thứ N / tổng ảnh.
+- Số box hiện tại.
+- Trạng thái lưu.
+- Mức zoom.
+- Tiến độ gán nhãn.
+
+Giao diện phải hỗ trợ resize cửa sổ và panel.
+
+Không tạo những nút hoặc menu không hoạt động.
+
+---
+
+# 8. DATASET MANAGEMENT
+
+Hỗ trợ chuẩn cấu trúc YOLO:
+
+```text
+Dataset/
+├── images/
+│   ├── train/
+│   ├── valid/
+│   └── test/
+├── labels/
+│   ├── train/
+│   ├── valid/
+│   └── test/
+└── data.yaml
+```
+
+Đồng thời cho phép mở một thư mục ảnh bất kỳ để bắt đầu project mới, không bắt buộc dataset phải có sẵn cấu trúc YOLO.
+
+Phải hỗ trợ:
+- Import Folder.
+- Import Images.
+- Import YOLO Dataset.
+- Import COCO Dataset.
+- Tạo dataset mới.
+- Chọn thư mục xuất nhãn.
+- Quản lý train/valid/test.
+- Phát hiện ảnh thiếu nhãn.
+- Phát hiện file nhãn không có ảnh tương ứng.
+- Phát hiện file trùng tên.
+- Thống kê đối tượng theo class.
+
+Không tự động chia lại dữ liệu đã được chia train/validation/test.
+
+Nếu người dùng muốn chia dữ liệu, hãy cung cấp chức năng riêng với tỷ lệ tùy chọn và seed cố định để tái lập kết quả.
+
+Phải kiểm tra nguy cơ rò rỉ dữ liệu giữa các tập, đặc biệt với ảnh trùng hoặc gần giống nhau.
+
+Mọi thao tác di chuyển hoặc chia dữ liệu phải có chế độ xem trước và xác nhận.
+
+---
+
+# 9. ANNOTATION FORMAT
+
+## A. YOLO
+
+Định dạng:
+
+`class_id x_center y_center width height`
+
+Yêu cầu:
+- Tọa độ chuẩn hóa từ 0 đến 1.
+- Một dòng là một đối tượng.
+- Một file nhãn tương ứng một ảnh.
+- Hỗ trợ đọc và ghi lại nhãn đã tồn tại.
+- Bảo toàn Class ID.
+- Không làm sai tọa độ khi resize/zoom.
+
+## B. COCO JSON
+
+Hỗ trợ import/export Object Detection COCO JSON.
+
+Bao gồm:
+- images.
+- annotations.
+- categories.
+- Bounding Box theo tọa độ pixel.
+- Category ID mapping phù hợp.
+
+Phải xử lý đúng sự khác nhau giữa hệ Class ID của YOLO và Category ID của COCO.
+
+## C. Pascal VOC
+
+Có thể bổ sung Pascal VOC XML nếu triển khai đúng chuẩn.
+
+Thiết kế Import/Export theo kiến trúc module để sau này có thể thêm các định dạng mới mà không cần sửa toàn bộ phần mềm.
+
+Không được coi Bounding Box YOLO là segmentation mask. Không tạo dữ liệu polygon hoặc mask giả từ một bounding box.
+
+---
+
+# 10. BẢO VỆ DỮ LIỆU
+
+Đây là phần có mức ưu tiên cao nhất.
+
+Ứng dụng phải:
+- Không sửa ảnh gốc.
+- Không ghi đè annotation khi chỉ xem ảnh.
+- Không tự xóa nhãn cũ.
+- Không tạo file nhãn rỗng ngoài ý muốn.
+- Có cảnh báo nếu box chưa gán class.
+- Hỗ trợ Undo/Redo.
+- Có Autosave bản nháp.
+- Có cơ chế backup trước thao tác nguy hiểm.
+- Có khả năng khôi phục công việc khi mở lại ứng dụng.
+- Có cơ chế ghi file an toàn bằng file tạm và thay thế.
+- Phân biệt ảnh chưa gán với ảnh xác nhận không có đối tượng.
+- Có thông báo lỗi khi file bị hỏng hoặc không đọc được.
+
+Trạng thái ảnh:
+- Unlabeled.
+- In Progress.
+- Completed.
+- Reviewed.
+- Confirmed Empty.
+
+Không dựa duy nhất vào sự tồn tại của file `.txt` để xác định ảnh đã hoàn thành.
+
+---
+
+# 11. IMAGE SUPPORT
+
+Hỗ trợ:
+- JPG.
+- JPEG.
+- PNG.
+- BMP.
+- WEBP.
+
+Ưu tiên bổ sung HEIC/HEIF để tương thích ảnh iPhone thông qua thư viện thích hợp.
+
+Phải:
+- Đọc EXIF Orientation.
+- Hiển thị đúng chiều ảnh.
+- Bảo toàn tọa độ annotation.
+- Không tự thay đổi độ phân giải ảnh gốc.
+- Xử lý ảnh có độ phân giải lớn.
+- Không tải toàn bộ dataset vào RAM.
+- Sử dụng lazy loading và cache có giới hạn.
+
+Nếu import Live Photo, chỉ xử lý thành phần ảnh tĩnh được hỗ trợ; không tự động xem video MOV là một ảnh.
+
+---
+
+# 12. DATASET STATISTICS
+
+Xây dựng Dashboard thống kê:
+
+- Total Images.
+- Labeled Images.
+- Unlabeled Images.
+- Reviewed Images.
+- Total Annotations.
+- Number of Classes.
+- Annotations Per Class.
+- Images Per Class.
+- Images With Multiple Objects.
+- Images With Multiple Classes.
+- Train/Validation/Test Distribution.
+
+Cho phép xuất báo cáo CSV.
+
+Có biểu đồ thống kê phân bố class.
+
+Thống kê phải được tính từ dữ liệu thật, không dùng số giả lập.
+
+---
+
+# 13. PROJECT CONFIGURATION
+
+Mỗi project cần một file cấu hình riêng, ví dụ:
+
+```yaml
+project_name: "Vehicle Detection"
+
+annotation_type: "bounding_box"
+
+format: "yolo"
+
+classes:
+  - car
+  - motorcycle
+  - bus
+  - truck
+  - bicycle
+```
+
+Đây chỉ là cấu trúc gợi ý. Có thể mở rộng thêm project ID, đường dẫn tương đối, màu class, phiên bản schema và metadata cần thiết.
+
+Cấu hình phải độc lập giữa các project.
+
+Đường dẫn mặc định được tính theo vị trí project hoặc ứng dụng, không phụ thuộc vào terminal đang đứng ở đâu.
+
+Cho phép di chuyển một project sang thư mục hoặc ổ đĩa khác mà không phải chỉnh sửa source code.
+
+Không lưu đường dẫn cứng `D:\Project\Tools` trong business logic.
+
+---
+
+# 14. KIẾN TRÚC SOURCE CODE
+
+Tổ chức đề xuất:
+
+```text
+Tools/
+├── main.py
+├── requirements.txt
+├── README.md
+│
+├── app/
+│   ├── core/
+│   │   ├── annotation.py
+│   │   ├── bounding_box.py
+│   │   ├── class_manager.py
+│   │   └── project_manager.py
+│   │
+│   ├── gui/
+│   │   ├── main_window.py
+│   │   ├── home_window.py
+│   │   ├── annotation_canvas.py
+│   │   ├── image_browser.py
+│   │   ├── class_panel.py
+│   │   ├── project_dialog.py
+│   │   └── styles.py
+│   │
+│   ├── dataset/
+│   │   ├── dataset_manager.py
+│   │   ├── image_loader.py
+│   │   ├── statistics.py
+│   │   └── validator.py
+│   │
+│   ├── formats/
+│   │   ├── yolo_format.py
+│   │   ├── coco_format.py
+│   │   └── voc_format.py
+│   │
+│   └── services/
+│       ├── autosave.py
+│       ├── settings.py
+│       └── backup.py
+│
+├── tests/
+│   ├── test_annotations.py
+│   ├── test_yolo.py
+│   ├── test_coco.py
+│   ├── test_projects.py
+│   ├── test_dataset.py
+│   └── test_validator.py
+│
+└── projects/
+```
+
+Có thể tinh chỉnh kiến trúc để tránh tạo các module không cần thiết, nhưng phải giữ nguyên nguyên tắc phân tách trách nhiệm.
+
+Không viết toàn bộ phần mềm trong một file Python duy nhất.
+
+---
+
+# 15. KIỂM THỬ VÀ CHẤT LƯỢNG
+
+Bắt buộc sử dụng pytest.
+
+Kiểm thử:
+1. Tạo project mới.
+2. Tạo và sửa danh sách class.
+3. Mở project cũ.
+4. Đọc ảnh.
+5. Vẽ Bounding Box.
+6. Gán class.
+7. Lưu YOLO.
+8. Đọc lại YOLO.
+9. Import COCO.
+10. Export COCO.
+11. Chuyển đổi tọa độ YOLO/COCO.
+12. Zoom và resize không làm lệch tọa độ.
+13. Vẽ box chồng nhau.
+14. Undo/Redo.
+15. Không ghi đè nhãn cũ khi mở ảnh.
+16. Không tạo nhãn rỗng ngoài ý muốn.
+17. Phát hiện class ID không hợp lệ.
+18. Phát hiện Bounding Box sai.
+19. Xử lý ảnh lỗi.
+20. Mở nhiều project độc lập.
+21. Đổi thứ tự class và kiểm tra ánh xạ nhãn an toàn.
+22. Khôi phục dự án sau khi đóng bất thường.
+23. Kiểm thử dữ liệu ảnh mix nhiều đối tượng.
+24. Kiểm thử đường dẫn có dấu và khoảng trắng.
+25. Kiểm thử dataset lớn mà không phải tải hết ảnh vào RAM.
+
+Bổ sung integration test và GUI smoke test phù hợp.
+
+Chạy:
+
+```bash
+python -m compileall app main.py
+python -m pytest -q
+```
+
+Phải sửa lỗi phát hiện được và chạy lại kiểm thử.
+
+Không được tuyên bố phần mềm không có lỗi khi chưa thực sự kiểm tra.
+
+Nếu có tính năng chưa hoàn thiện, phải báo cáo rõ ràng.
+
+---
+
+# 16. UI/UX VÀ NHẬN DIỆN PHẦN MỀM
+
+Tên thương hiệu:
+
+**Tools by hkhang17pls**
+
+Phong cách:
+- Modern Desktop.
+- Dark Theme mặc định.
+- Clean UI.
+- Chuyên nghiệp.
+- Ít rối mắt.
+- Tối ưu cho làm việc thời gian dài.
+
+Có thể dùng phong cách của các ứng dụng annotation chuyên nghiệp làm tham khảo, nhưng không sao chép nguyên bản giao diện hoặc tài sản thương hiệu.
+
+Ưu tiên:
+- Tốc độ thao tác.
+- Khả năng quan sát nhãn.
+- Phím tắt thuận tiện.
+- Giao diện nhất quán.
+- Dễ sử dụng với người mới.
+
+Không tạo hiệu ứng không cần thiết làm giảm hiệu năng.
+
+---
+
+# 17. QUY TRÌNH TRIỂN KHAI
+
+Thực hiện lần lượt:
+
+**Phase 1 — Audit Existing Source**
+
+Đọc code cũ, phát hiện lỗi, đánh giá khả năng tái sử dụng và bảo vệ dữ liệu hiện có.
+
+**Phase 2 — Core Architecture**
+
+Xây dựng hệ thống project, class động, Bounding Box, đọc/ghi YOLO, validator và unit test.
+
+**Phase 3 — Desktop GUI**
+
+Xây dựng Home Dashboard, Main Window, Annotation Canvas, Class Panel, Image Browser và Menu.
+
+**Phase 4 — Dataset Features**
+
+Hoàn thiện import/export, thống kê, quản lý dataset, trạng thái ảnh và khôi phục công việc.
+
+**Phase 5 — Testing & Optimization**
+
+Kiểm thử thực tế, sửa lỗi, tối ưu hiệu năng và kiểm tra an toàn dữ liệu.
+
+**Phase 6 — Packaging**
+
+Khi ứng dụng đã vượt qua kiểm thử, xây dựng phiên bản Windows EXE bằng PyInstaller nếu môi trường hỗ trợ.
+
+---
+
+# 18. TIÊU CHÍ NGHIỆM THU
+
+Sản phẩm hoàn thành phải đáp ứng:
+
+- Có tên Tools by hkhang17pls.
+- Có giao diện desktop hoàn chỉnh.
+- Tạo được nhiều project.
+- Mỗi project có danh sách class độc lập.
+- Không giới hạn vào 9 class tiền Việt Nam.
+- Đọc được dataset YOLO cũ.
+- Tạo và chỉnh sửa Bounding Box.
+- Hỗ trợ nhiều đối tượng trong một ảnh.
+- Zoom/Pan chính xác.
+- Lưu và đọc lại YOLO đúng định dạng.
+- Import/Export COCO nếu tính năng này được đánh dấu hoàn thành.
+- Có menu, toolbar và phím tắt hoạt động.
+- Có quản lý tiến độ.
+- Có thống kê dataset.
+- Có Autosave và Undo/Redo.
+- Không làm mất dữ liệu đã gán.
+- Có unit test và integration test.
+- Có README hướng dẫn bằng tiếng Việt.
+- Có requirements.txt.
+- Chạy được bằng `python main.py`.
+
+Kết quả bàn giao phải nêu cụ thể những chức năng đã triển khai, những chức năng chưa triển khai và kết quả kiểm thử thực tế.
+
+---
+
+# 19. YÊU CẦU THỰC THI CUỐI CÙNG
+
+Hãy bắt đầu trực tiếp từ source code hiện có trong workspace.
+
+Không tạo một bản demo chỉ có giao diện nhưng chức năng không hoạt động.
+
+Không bỏ qua logic cũ có thể tái sử dụng.
+
+Không tự động sửa đổi nội dung dataset hiện tại.
+
+Không tự động đổi tên class hoặc Class ID của các nhãn đã tồn tại.
+
+Trong trường hợp phải thay đổi schema hoặc dữ liệu, hãy thiết kế migration an toàn, có backup và khả năng rollback.
+
+Ưu tiên hoàn thiện chức năng cốt lõi của Object Detection trước, sau đó mới mở rộng các chức năng phụ.
+
+Tất cả lỗi phát hiện trong quá trình kiểm thử phải được xử lý hoặc báo cáo minh bạch.
+
+**Mục tiêu cuối cùng: Tools by hkhang17pls là một phần mềm desktop gán nhãn ảnh đa dự án, có thể sử dụng thực tế cho nhiều đề tài Computer Vision khác nhau, với dữ liệu an toàn, kết quả chính xác và kiến trúc dễ mở rộng.**
+
+Bắt đầu kiểm tra workspace và triển khai ngay.
